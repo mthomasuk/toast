@@ -55,9 +55,6 @@ func LoadKeyFromPEMByte(pukBytes, prkBytes []byte, ParseKey func([]byte, []byte)
 }
 
 func LoadKeyFromPEMFile(publicKeyFilePath, privateKeyFilePath string, ParseKey func([]byte, []byte) (Key, error)) (Key, error) {
-
-	//TODO 断言如果入参为"" ，则直接报错
-
 	publicKeyFilePath = strings.TrimSpace(publicKeyFilePath)
 
 	pukBytes, err := ioutil.ReadFile(publicKeyFilePath)
