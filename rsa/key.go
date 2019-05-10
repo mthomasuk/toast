@@ -40,6 +40,20 @@ func ParsePKCS1Key(publicKey, privateKey []byte) (Key, error) {
 	return &key{publicKey: puk.(*rsa.PublicKey), privateKey: prk}, nil
 }
 
+func LoadKeyFromPEMByte(pukBytes, prkBytes []byte, ParseKey func([]byte, []byte) (Key, error)) (Key, error) {
+		puk, _ := pem.Decode(pukBytes)
+		if puk == nil {
+			return nil, errors.New("publicKey is not pem format")
+		}
+
+		prk, _ := pem.Decode(prkBytes)
+		if prk == nil {
+			return nil, errors.New("privateKey is not pem format")
+		}
+
+		return ParseKey(puk.Bytes, prk.Bytes)
+}
+
 func LoadKeyFromPEMFile(publicKeyFilePath, privateKeyFilePath string, ParseKey func([]byte, []byte) (Key, error)) (Key, error) {
 
 	//TODO 断言如果入参为"" ，则直接报错
@@ -53,7 +67,7 @@ func LoadKeyFromPEMFile(publicKeyFilePath, privateKeyFilePath string, ParseKey f
 
 	puk, _ := pem.Decode(pukBytes)
 	if puk == nil {
-		return nil, errors.New("publicKey is not pem formate")
+		return nil, errors.New("publicKey is not pem format")
 	}
 
 	privateKeyFilePath = strings.TrimSpace(privateKeyFilePath)
@@ -65,7 +79,7 @@ func LoadKeyFromPEMFile(publicKeyFilePath, privateKeyFilePath string, ParseKey f
 
 	prk, _ := pem.Decode(prkBytes)
 	if prk == nil {
-		return nil, errors.New("privateKey is not pem formate")
+		return nil, errors.New("privateKey is not pem format")
 	}
 
 	return ParseKey(puk.Bytes, prk.Bytes)
