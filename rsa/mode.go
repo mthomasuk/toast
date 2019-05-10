@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"errors"
+	"hash"
 )
 
 type CipherMode interface {
@@ -65,7 +66,7 @@ func (pkcs1v15 *pkcs1v15Sign) Verify(src []byte, sign []byte, hash crypto.Hash, 
 }
 
 type oaepCipher struct {
-	h crypto.Hash
+	h hash.Hash
 }
 
 func NewOAEPCipher() CipherMode {
