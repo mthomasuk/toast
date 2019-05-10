@@ -6,6 +6,7 @@ import (
 	"crypto/rsa"
 	"errors"
 	"hash"
+	"crypto/sha1"
 )
 
 type CipherMode interface {
@@ -70,7 +71,7 @@ type oaepCipher struct {
 }
 
 func NewOAEPCipher() CipherMode {
-	return new(oaepCipher)
+	return &oaepCipher{h:sha1.New()}
 }
 
 func (oaep *oaepCipher) Encrypt(plainText []byte, puk *rsa.PublicKey) ([]byte, error) {
