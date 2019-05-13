@@ -1,4 +1,4 @@
-module github.com/mthomasuk/toast
+module github.com/getfiit/toast
 
 exclude github.com/Sirupsen/logrus v1.3.0
 
